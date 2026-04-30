@@ -52,14 +52,12 @@ export default function MemberPage() {
           </Link>
 
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="w-48 h-48 flex-shrink-0 bg-gradient-to-br from-red-900 to-red-700 rounded-lg border border-flux-red/30 flex items-center justify-center overflow-hidden glow-red">
-              {member.avatar_url ? (
-                <img src={member.avatar_url} alt={member.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="font-oswald text-6xl text-white/50">
-                  {member.nickname?.[0] ?? member.name[0]}
-                </span>
-              )}
+            <div className="w-48 h-48 flex-shrink-0 bg-gradient-to-br from-red-900 to-red-700 rounded-lg border border-flux-red/30 overflow-hidden glow-red">
+              <img
+                src={member.avatar_url ?? "https://cdn.poehali.dev/files/dc2b3d93-3e55-4482-9c27-4be67e255e72.png"}
+                alt={member.name}
+                className="w-full h-full object-cover object-top"
+              />
             </div>
 
             <div className="flex-1">
