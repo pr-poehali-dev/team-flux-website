@@ -15,6 +15,13 @@ interface MemberForm {
   join_date: string;
   is_active: boolean;
   sort_order: number;
+  faceit_lvl: string;
+  faceit_elo: string;
+  kd_ratio: string;
+  matches_played: string;
+  matches_won: string;
+  favorite_weapon: string;
+  motto: string;
 }
 
 interface AchievementForm {
@@ -30,6 +37,8 @@ interface AchievementForm {
 const emptyMember: MemberForm = {
   name: "", role: "", nickname: "", bio: "", avatar_url: "",
   social_vk: "", social_tg: "", join_date: "", is_active: true, sort_order: 0,
+  faceit_lvl: "", faceit_elo: "", kd_ratio: "", matches_played: "0", matches_won: "0",
+  favorite_weapon: "", motto: "",
 };
 
 const emptyAchievement: AchievementForm = {
@@ -69,6 +78,13 @@ export default function AdminPage() {
       social_vk: m.social_vk ?? "", social_tg: m.social_tg ?? "",
       join_date: m.join_date ? m.join_date.slice(0, 10) : "",
       is_active: m.is_active, sort_order: m.sort_order,
+      faceit_lvl: m.faceit_lvl != null ? String(m.faceit_lvl) : "",
+      faceit_elo: m.faceit_elo != null ? String(m.faceit_elo) : "",
+      kd_ratio: m.kd_ratio != null ? String(m.kd_ratio) : "",
+      matches_played: String(m.matches_played ?? 0),
+      matches_won: String(m.matches_won ?? 0),
+      favorite_weapon: m.favorite_weapon ?? "",
+      motto: m.motto ?? "",
     });
     setShowMemberForm(true);
   };
@@ -81,7 +97,16 @@ export default function AdminPage() {
 
   const saveMember = async () => {
     setLoading(true);
-    const data = { ...memberForm, join_date: memberForm.join_date || null, sort_order: Number(memberForm.sort_order) };
+    const data = {
+      ...memberForm,
+      join_date: memberForm.join_date || null,
+      sort_order: Number(memberForm.sort_order),
+      faceit_lvl: memberForm.faceit_lvl ? Number(memberForm.faceit_lvl) : null,
+      faceit_elo: memberForm.faceit_elo ? Number(memberForm.faceit_elo) : null,
+      kd_ratio: memberForm.kd_ratio ? Number(memberForm.kd_ratio) : null,
+      matches_played: Number(memberForm.matches_played) || 0,
+      matches_won: Number(memberForm.matches_won) || 0,
+    };
     if (editingMember) {
       await membersApi.update(editingMember.id, data);
       notify("Участник обновлён");
@@ -333,6 +358,58 @@ export default function AdminPage() {
                   <label className={labelCls}>ПОРЯДОК</label>
                   <input type="number" className={inputCls} value={memberForm.sort_order}
                     onChange={(e) => setMemberForm({ ...memberForm, sort_order: Number(e.target.value) })} />
+                </div>
+              </div>
+
+              <div className="border-t border-flux-border pt-4">
+                <div className="font-oswald text-xs text-gray-500 tracking-widest mb-3">// СТАТИСТИКА</div>
+                <div className="grid grid-cols-3 gap-3 mb-3">
+                  <div>
+                    <label className={labelCls}>FACEIT LVL</label>
+                    <input type="number" min="1" max="10" className={inputCls} placeholder="1-10"
+                      value={memberForm.faceit_lvl}
+                      onChange={(e) => setMemberForm({ ...memberForm, faceit_lvl: e.target.value })} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>FACEIT ELO</label>
+                    <input type="number" className={inputCls} placeholder="1500"
+                      value={memberForm.faceit_elo}
+                      onChange={(e) => setMemberForm({ ...memberForm, faceit_elo: e.target.value })} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>K/D</label>
+                    <input type="number" step="0.01" className={inputCls} placeholder="1.20"
+                      value={memberForm.kd_ratio}
+                      onChange={(e) => setMemberForm({ ...memberForm, kd_ratio: e.target.value })} />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div>
+                    <label className={labelCls}>МАТЧЕЙ СЫГРАНО</label>
+                    <input type="number" className={inputCls} placeholder="0"
+                      value={memberForm.matches_played}
+                      onChange={(e) => setMemberForm({ ...memberForm, matches_played: e.target.value })} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>ПОБЕД</label>
+                    <input type="number" className={inputCls} placeholder="0"
+                      value={memberForm.matches_won}
+                      onChange={(e) => setMemberForm({ ...memberForm, matches_won: e.target.value })} />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className={labelCls}>ЛЮБИМОЕ ОРУЖИЕ</label>
+                    <input className={inputCls} placeholder="AK-47"
+                      value={memberForm.favorite_weapon}
+                      onChange={(e) => setMemberForm({ ...memberForm, favorite_weapon: e.target.value })} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>ДЕВИЗ</label>
+                    <input className={inputCls} placeholder="Цитата..."
+                      value={memberForm.motto}
+                      onChange={(e) => setMemberForm({ ...memberForm, motto: e.target.value })} />
+                  </div>
                 </div>
               </div>
 

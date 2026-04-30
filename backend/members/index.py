@@ -68,14 +68,18 @@ def handler(event: dict, context) -> dict:
         elif method == "POST":
             body = json.loads(event.get("body") or "{}")
             cur.execute(
-                f"""INSERT INTO {SCHEMA}.members (name, role, nickname, bio, avatar_url, social_vk, social_tg, join_date, is_active, sort_order)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *""",
+                f"""INSERT INTO {SCHEMA}.members (name, role, nickname, bio, avatar_url, social_vk, social_tg, join_date, is_active, sort_order,
+                    faceit_lvl, faceit_elo, kd_ratio, matches_played, matches_won, favorite_weapon, motto)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *""",
                 (
                     body["name"], body["role"], body.get("nickname"),
                     body.get("bio"), body.get("avatar_url"),
                     body.get("social_vk"), body.get("social_tg"),
                     body.get("join_date"), body.get("is_active", True),
                     body.get("sort_order", 0),
+                    body.get("faceit_lvl"), body.get("faceit_elo"), body.get("kd_ratio"),
+                    body.get("matches_played", 0), body.get("matches_won", 0),
+                    body.get("favorite_weapon"), body.get("motto"),
                 ),
             )
             member = cur.fetchone()
@@ -89,6 +93,9 @@ def handler(event: dict, context) -> dict:
                     name = %s, role = %s, nickname = %s, bio = %s,
                     avatar_url = %s, social_vk = %s, social_tg = %s,
                     join_date = %s, is_active = %s, sort_order = %s,
+                    faceit_lvl = %s, faceit_elo = %s, kd_ratio = %s,
+                    matches_played = %s, matches_won = %s,
+                    favorite_weapon = %s, motto = %s,
                     updated_at = NOW()
                     WHERE id = %s RETURNING *""",
                 (
@@ -96,7 +103,11 @@ def handler(event: dict, context) -> dict:
                     body.get("bio"), body.get("avatar_url"),
                     body.get("social_vk"), body.get("social_tg"),
                     body.get("join_date"), body.get("is_active", True),
-                    body.get("sort_order", 0), member_id,
+                    body.get("sort_order", 0),
+                    body.get("faceit_lvl"), body.get("faceit_elo"), body.get("kd_ratio"),
+                    body.get("matches_played", 0), body.get("matches_won", 0),
+                    body.get("favorite_weapon"), body.get("motto"),
+                    member_id,
                 ),
             )
             member = cur.fetchone()

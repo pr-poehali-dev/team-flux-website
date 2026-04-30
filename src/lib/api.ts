@@ -13,6 +13,13 @@ export interface Member {
   join_date: string | null;
   is_active: boolean;
   sort_order: number;
+  faceit_lvl: number | null;
+  faceit_elo: number | null;
+  kd_ratio: number | null;
+  matches_played: number;
+  matches_won: number;
+  favorite_weapon: string | null;
+  motto: string | null;
   created_at: string;
   updated_at: string;
 }

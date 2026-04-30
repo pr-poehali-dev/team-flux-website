@@ -33,9 +33,9 @@ export default function RosterPage() {
 
       <section className="pb-20 max-w-6xl mx-auto px-4">
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="bg-flux-card border border-flux-border rounded-lg h-64 animate-pulse" />
+              <div key={i} className="bg-flux-card border border-flux-border rounded-xl h-96 animate-pulse" />
             ))}
           </div>
         ) : members.length === 0 ? (
@@ -44,7 +44,7 @@ export default function RosterPage() {
             <p className="text-sm">Добавьте участников через панель управления</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
             {members.map((m, i) => (
               <MemberCard key={m.id} member={m} index={i} />
             ))}
