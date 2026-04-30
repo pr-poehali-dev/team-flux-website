@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { membersApi, achievementsApi, Member, Achievement } from "@/lib/api";
+import { membersApi, Member } from "@/lib/api";
 import MemberCard from "@/components/MemberCard";
 import Icon from "@/components/ui/icon";
 
 export default function HomePage() {
   const [members, setMembers] = useState<Member[]>([]);
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
 
   useEffect(() => {
     membersApi.getAll().then(setMembers);
-    achievementsApi.getAll({ is_team: true }).then((data) => setAchievements(data.slice(0, 3)));
   }, []);
 
   return (
@@ -70,9 +68,9 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: members.length, label: "ИГРОКОВ" },
-            { value: achievements.filter((a) => a.place === "1").length + 3, label: "ПОБЕД" },
-            { value: "2020", label: "ГОД ОСНОВАНИЯ" },
-            { value: achievements.length + 2, label: "ТУРНИРОВ" },
+            { value: "1", label: "ТУРНИРОВ" },
+            { value: "2026", label: "ГОД ОСНОВАНИЯ" },
+            { value: "0", label: "ПОБЕД" },
           ].map((s) => (
             <div key={s.label}>
               <div className="font-oswald text-4xl md:text-5xl text-flux-red-glow mb-1">{s.value}</div>
@@ -104,47 +102,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Achievements preview */}
+      {/* Coming soon */}
       <section className="py-20 bg-flux-card/30 border-y border-flux-border">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <div className="text-flux-red text-sm font-oswald tracking-widest mb-2">// ДОСТИЖЕНИЯ</div>
-              <h2 className="font-oswald text-4xl text-white">НАШИ ПОБЕДЫ</h2>
-            </div>
-            <Link
-              to="/achievements"
-              className="flex items-center gap-2 text-flux-red-glow hover:text-white transition-colors font-oswald text-sm tracking-widest"
-            >
-              ВСЕ <Icon name="ArrowRight" size={16} />
-            </Link>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {achievements.map((a) => (
-              <div
-                key={a.id}
-                className="bg-flux-card border border-flux-border rounded-lg p-6 hover:border-flux-red transition-colors"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-flux-red/10 border border-flux-red/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="font-oswald text-flux-red-glow text-xl">
-                      {a.place === "1" ? "🥇" : a.place === "2" ? "🥈" : "🏆"}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="font-oswald text-white text-lg">{a.title}</div>
-                    <div className="text-gray-500 text-sm mt-1">{a.tournament}</div>
-                    {a.date && (
-                      <div className="text-gray-600 text-xs mt-2">
-                        {new Date(a.date).toLocaleDateString("ru-RU", { year: "numeric", month: "long" })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <div className="text-flux-red text-sm font-oswald tracking-widest mb-3">// ДОСТИЖЕНИЯ</div>
+          <h2 className="font-oswald text-4xl text-white mb-4">ИСТОРИЯ ПИШЕТСЯ</h2>
+          <p className="text-gray-500 max-w-md mx-auto">
+            Мы только начинаем. Первый турнир — первый шаг к вершине. Следите за нашими успехами.
+          </p>
         </div>
       </section>
 

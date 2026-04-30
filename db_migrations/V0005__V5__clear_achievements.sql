@@ -1,0 +1,1 @@
+UPDATE t_p75921280_team_flux_website.achievements SET title = 'АРХИВ' WHERE id > 0
